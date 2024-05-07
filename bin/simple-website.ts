@@ -1,10 +1,10 @@
 #!/usr/bin/env node
-import 'source-map-support/register';
 import * as cdk from 'aws-cdk-lib';
-import { SimpleWebsiteStack } from '../lib/simple-website-stack';
+import 'source-map-support/register';
+import { MainStack } from './main-stack';
 
 const app = new cdk.App();
-new SimpleWebsiteStack(app, 'SimpleWebsiteStack', {
+new MainStack(app, 'MainStack', {
   /* If you don't specify 'env', this stack will be environment-agnostic.
    * Account/Region-dependent features and context lookups will not work,
    * but a single synthesized template can be deployed anywhere. */
