@@ -9,16 +9,32 @@ import { Construct } from 'constructs';
 // import * as sqs from 'aws-cdk-lib/aws-sqs';
 
 interface SSRWebsiteConstructOptions {
+  /**
+   * The domain name for the website
+   */
   domainName: string;
+  /**
+   * The certificate to use for the website, must be in us-east-1 region
+   */
   certificate: acm.ICertificate;
   allowMethods?: lambda.HttpMethod[];
   allowOrigins?: string[];
   allowHeaders?: string[];
   allowMethodsCloudFront?: cloudfront.AllowedMethods;
   responseHeadersPolicy?: cloudfront.ResponseHeadersPolicy;
+  /**
+   * If true, will output the distribution domain name as a CloudFormation output
+   * @default false
+   */
   cfnOutput?: boolean;
 }
 
+/**
+ * A construct to create a serverless-side rendered website
+ * @param scope a Construct, most likely a cdk.Stack created
+ * @param id the id of the Construct to create, usually domain name
+ * @param props properties from SSRWebsiteConstructOptions interface
+ */
 export class SSRWebsiteConstruct extends Construct {
   public readonly distribution: cloudfront.Distribution;
   private readonly functionUrl: lambda.IFunctionUrl;
@@ -27,7 +43,7 @@ export class SSRWebsiteConstruct extends Construct {
     super(scope, id);
 
 
-    // Create a public lambda function with function url
+    // Create a lambda function with function url and IAM auth
 
     const dockerfileDir = `artifacts/${options.domainName}`;
 
